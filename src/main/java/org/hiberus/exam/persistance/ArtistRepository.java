@@ -10,10 +10,9 @@ import java.util.Set;
 public interface ArtistRepository extends CrudRepository<Artist, Long> {
 
     @Override
-    @Query("select a from Artist a left join fetch a.styles s")
     Set<Artist> findAll();
 
-    @Query("select a from Artist a left join fetch a.styles s where s.name = :nameStyle")
+    @Query("select a from Artist a inner join fetch a.styles s where s.name = :nameStyle")
     Set<Artist> findByStyle(@Param("nameStyle") String nameStyle);
 
     Artist findByName(String name);
