@@ -34,6 +34,7 @@ public class ExamApplication {
             //Create registers of Artists:
             Artist avenged = new Artist("Avenged Sevenfold", 1999);
             Artist nothingMore = new Artist("Nothing More", 2003);
+            Artist architects = new Artist("Architects", 2007);
 
             Style heavy = new Style("Heavy Metal");
             Style metalcore = new Style("Metalcore");
@@ -42,6 +43,11 @@ public class ExamApplication {
             People mshadows = new People("M Shadows", 37);
             People synyster = new People("Synyster Gates", 37);
 
+            //Create registers of Styles:
+
+            styleRepository.save(heavy);
+            styleRepository.save(metalcore);
+            styleRepository.save(hardrock);
 
             avenged.setPeople(new HashSet<People>(){{
                 add(mshadows);
@@ -56,14 +62,14 @@ public class ExamApplication {
                 add(hardrock);
             }});
 
+            architects.setStyles(new HashSet<Style>(){{
+                add(metalcore);
+            }});
+            artistRepository.save(architects);
+
             artistRepository.save(avenged);
             artistRepository.save(nothingMore);
 
-            //Create registers of Styles:
-
-            styleRepository.save(heavy);
-            styleRepository.save(metalcore);
-            styleRepository.save(hardrock);
 //
 //            //Create registers of People
 //

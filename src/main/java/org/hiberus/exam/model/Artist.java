@@ -20,7 +20,7 @@ public class Artist {
     @OneToMany(mappedBy="artist", cascade = CascadeType.ALL)
     private Set<People> people = new HashSet<People>();
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = {CascadeType.MERGE,CascadeType.REFRESH})
     @JoinTable(name = "artist_style",
             joinColumns = @JoinColumn(name = "style_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "artist_id",
