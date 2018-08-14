@@ -1,5 +1,7 @@
 package org.hiberus.exam.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 import java.util.Set;
 
@@ -13,6 +15,7 @@ public class Style {
     @Column(nullable = false)
     private String name;
 
+    @JsonBackReference
     @ManyToMany(mappedBy = "styles")
     private Set<Artist> artists;
 
@@ -22,18 +25,15 @@ public class Style {
         this.name = name;
     }
 
+    public String getName() {
+        return name;
+    }
+
     public Set<Artist> getArtists() {
         return artists;
     }
 
     public void addArtist(Artist artist) {
         this.artists.add(artist);
-    }
-
-    @Override
-    public String toString() {
-        return String.format(
-                "Style[id=%d, name='%s']",
-                id, name);
     }
 }

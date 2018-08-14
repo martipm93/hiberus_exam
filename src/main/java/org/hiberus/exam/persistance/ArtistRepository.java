@@ -12,8 +12,8 @@ public interface ArtistRepository extends CrudRepository<Artist, Long> {
     @Override
     Set<Artist> findAll();
 
-    @Query("select a from Artist a inner join fetch a.styles s where s.name = :nameStyle")
-    Set<Artist> findByStyle(@Param("nameStyle") String nameStyle);
+    @Query("select a from Artist a inner join fetch a.styles s where s.id = :styleId")
+    Set<Artist> findByStyle(@Param("styleId") long id);
 
     Artist findByName(String name);
 

@@ -1,7 +1,12 @@
 package org.hiberus.exam.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 @Entity
@@ -17,9 +22,11 @@ public class Artist {
     @Column
     private int year;
 
+    @JsonManagedReference
     @OneToMany(mappedBy="artist", cascade = CascadeType.ALL)
     private Set<People> people = new HashSet<People>();
 
+    @JsonManagedReference
     @ManyToMany(cascade = {CascadeType.MERGE,CascadeType.REFRESH})
     @JoinTable(name = "artist_style",
             joinColumns = @JoinColumn(name = "style_id", referencedColumnName = "id"),
@@ -44,6 +51,18 @@ public class Artist {
         this.year = year;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getId() {
+        return this.id;
+    }
+
+    public String getName() { return this.name; }
+
+    public Integer getYear() { return this.year; }
+
     public void setPeople(Set<People> people) {
         this.people = people;
     }
@@ -58,11 +77,11 @@ public class Artist {
         this.styles = styles;
     }
 
-    @Override
-    public String toString() {
-        return String.format(
-                "Artist[id=%d, name='%s', year='%s']",
-                id, name, year);
+    public Set<Style> getStyles() {
+        return styles;
     }
+
+    public void addStyle(Style style) {this.styles.add(style);}
+
 
 }
