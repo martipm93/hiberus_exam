@@ -22,27 +22,27 @@ public class Artist {
     @Column
     private int year;
 
-    @JsonManagedReference
     @OneToMany(mappedBy="artist", cascade = CascadeType.ALL)
     private Set<People> people = new HashSet<People>();
 
-    @JsonManagedReference
     @ManyToMany(cascade = {CascadeType.MERGE,CascadeType.REFRESH})
     @JoinTable(name = "artist_style",
-            joinColumns = @JoinColumn(name = "style_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "artist_id",
+            joinColumns = @JoinColumn(name = "artist_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "style_id",
                     referencedColumnName = "id"))
     private Set<Style> styles = new HashSet<Style>();
 
-//    @ManyToMany(cascade = {
-//            CascadeType.PERSIST,
-//            CascadeType.MERGE
-//    })
-//    @JoinTable(name = "artist_artist",
-//            joinColumns = @JoinColumn(name = "artist_id", referencedColumnName = "id"),
-//            inverseJoinColumns = @JoinColumn(name = "artist_id",
-//                    referencedColumnName = "id"))
-//    private List<Artist> artists;
+    @ManyToMany(cascade = {
+            CascadeType.PERSIST,
+            CascadeType.MERGE
+    })
+    @JoinTable(name = "artist_artist",
+            joinColumns = @JoinColumn(name = "artist_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "related_id",
+                    referencedColumnName = "id"))
+    private Set<Artist> related;
+
+
 
     public Artist() {}
 
@@ -83,5 +83,14 @@ public class Artist {
 
     public void addStyle(Style style) {this.styles.add(style);}
 
+    public void addRelated(Artist artist) {this.related.add(artist);}
+
+    public void setRelated(Set<Artist> related) {
+        this.related = related;
+    }
+
+    public Set<Artist> getRelated() {
+        return related;
+    }
 
 }

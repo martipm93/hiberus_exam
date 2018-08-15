@@ -134,6 +134,60 @@ public class ArtistResource {
         return ResponseEntity.noContent().build();
     }
 
+    @GetMapping("/artists/{id}/related")
+    public Set<Artist> getArtistRelated(@PathVariable long id) throws Exception {
+        Optional<Artist> artist = artistRepository.findById(id);
+
+        if (!artist.isPresent())
+            throw new Exception("id-" + id);
+
+        return artist.get().getRelated();
+    }
+
+    @PutMapping("/artists/{id}/related/{idRelated}")
+    public ResponseEntity<Void> putRelatedArtist(@PathVariable long id, @PathVariable long idRelated) {
+
+        Optional<Artist> artistOptional = artistRepository.findById(id);
+
+        if (!artistOptional.isPresent())
+            return ResponseEntity.notFound().build();
+
+        Optional<Artist> relatedOptional = artistRepository.findById(idRelated);
+
+        if (!relatedOptional.isPresent())
+            return ResponseEntity.notFound().build();
+
+        Artist artist = artistOptional.get();
+
+        artist.addRelated(relatedOptional.get());
+
+        artistRepository.save(artist);
+
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("/artists/{id}/related/{idRelated}")
+    public ResponseEntity<Void> deleteRelatedArtist(@PathVariable long id, @PathVariable long idRelated) {
+
+        Optional<Artist> artistOptional = artistRepository.findById(id);
+
+        if (!artistOptional.isPresent())
+            return ResponseEntity.notFound().build();
+
+        Optional<Artist> relatedOptional = artistRepository.findById(idRelated);
+
+        if (!relatedOptional.isPresent())
+            return ResponseEntity.notFound().build();
+
+        Artist artist = artistOptional.get();
+
+        artist.getRelated().remove(relatedOptional.get());
+
+        artistRepository.save(artist);
+
+        return ResponseEntity.noContent().build();
+    }
+
     @GetMapping("/artists/style/{id}")
     public Set<Artist> getArtistByStyle(@PathVariable long id) {
         return artistRepository.findByStyle(id);

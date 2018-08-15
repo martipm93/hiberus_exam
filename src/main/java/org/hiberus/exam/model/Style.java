@@ -9,7 +9,7 @@ import java.util.Set;
 public class Style {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @Column(nullable = false)
@@ -25,9 +25,15 @@ public class Style {
         this.name = name;
     }
 
+    public void setId(Long id) { this.id = id; }
+
+    public Long getId() { return this.id; }
+
     public String getName() {
         return name;
     }
+
+    public void setName(String name) { this.name = name; }
 
     public Set<Artist> getArtists() {
         return artists;

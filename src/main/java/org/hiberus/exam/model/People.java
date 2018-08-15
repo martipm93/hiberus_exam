@@ -1,6 +1,7 @@
 package org.hiberus.exam.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
@@ -9,7 +10,7 @@ import javax.persistence.*;
 public class People {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @Column(nullable = false)
@@ -18,7 +19,7 @@ public class People {
     @Column(nullable = false)
     private int years;
 
-    @JsonBackReference
+    @JsonIgnore
     @ManyToOne(cascade = CascadeType.ALL)
     private Artist artist;
 
@@ -28,6 +29,10 @@ public class People {
         this.name = name;
         this.years = years;
     }
+
+    public void setId(Long id) { this.id = id; }
+
+    public Long getId() { return this.id; }
 
     public String getName() {
        return name;
